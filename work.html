@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eating Disorder Recovery App</title>
+    <style>
+      body {
+        font-family: "Times New Roman", serif;
+        color: #5D737E;
+        padding: 20px;
+        border: 5px solid #6A0572;
+        background: linear-gradient(to bottom, #E8AEB7 50%, #D6CDEA 50%);
+        transition: background 0.3s, color 0.3s;
+      }
+      
+      .dark-mode {
+        background: #333;
+        color: white;
+      }
+
+      .container {
+        margin: 20px;
+      }
+
+      button {
+        margin-top: 10px;
+      }
+
+      #profile-container {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+      }
+
+      #profile-pic {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: none;
+        border: 2px solid white;
+      }
+
+      #username {
+        font-size: 12px;
+        color: #5D737E;
+        display: none;
+      }
+
+      h1 {
+        color: #6A0572;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="profile-container">
+      <img id="profile-pic" src="" alt="Profile Picture" />
+      <div id="username"></div>
+    </div>
+
+    <div id="app" class="container"></div>
+
+    <script>
+      class EatingDisorderRecoveryApp {
+        constructor() {
+          this.darkMode = false;
+          this.profilePicURL = "";
+          this.username = "";
+          this.loginPage();
+        }
+
+        loginPage() {
+          const appContainer = document.getElementById("app");
+          appContainer.innerHTML = `
+                    <h1>Login</h1>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Enter your Gmail ID"><br>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter your password"><br>
+                    <label for="usernameInput">Username:</label>
+                    <input type="text" id="usernameInput" placeholder="Enter your username"><br>
+                    <button id="loginBtn">Login</button>
+                `;
+
+          document.getElementById("loginBtn").addEventListener("click", () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const username = document.getElementById("usernameInput").value;
+            if (email === "" || password === "" || username === "") {
+              alert("Please enter all details");
+              return;
+            }
+            this.username = username;
+            document.getElementById("username").textContent = username;
+            document.getElementById("username").style.display = "block";
+            this.page2();
+          });
+        }
+
+        page2() {
+          const appContainer = document.getElementById("app");
+          appContainer.innerHTML = `
+                    <h1>Welcome!</h1>
+                    <label for="eatToday">Did you eat today?</label>
+                    <input type="text" id="eatToday" placeholder="Yes/No"><br>
+                    <label for="whatAte">What did you eat?</label>
+                    <input type="text" id="whatAte" placeholder="Describe your meal"><br>
+                    <label for="feelAte">How did you feel when you ate?</label>
+                    <input type="text" id="feelAte" placeholder="Describe your feelings"><br>
+                    <label for="notes">Notes (The Warrior, Not the Worrier):</label>
+                    <textarea id="notes" placeholder="Write your notes"></textarea><br>
+                    
+                    <h2>Chat with Chatbot</h2>
+                    <label for="chatMessage">Type your message:</label>
+                    <input type="text" id="chatMessage" placeholder="Your message">
+                    <button id="sendMessageBtn">Send Message</button>
+                    <p id="chatResponse"></p>
+                    
+                    <h2>Believe in Yourself, Not the Scale</h2>
+                    <p>Helpful videos on eating disorder recovery:</p>
+                    <ul>
+                      <li><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Recovery Journey</a></li>
+                      <li><a href="https://www.youtube.com/watch?v=ZbZSe6N_BXs" target="_blank">You are Strong</a></li>
+                    </ul>
+                    <button id="settingsBtn">Access Settings</button>
+                `;
+          
+          document.getElementById("sendMessageBtn").addEventListener("click", () => {
+            const message = document.getElementById("chatMessage").value;
+            document.getElementById("chatResponse").textContent = "Chatbot: " + message;
+          });
+          
+          document.getElementById("settingsBtn").addEventListener("click", () => this.settings());
+        }
+
+        settings() {
+          const appContainer = document.getElementById("app");
+          appContainer.innerHTML = `
+                    <h1>Settings</h1>
+                    <label for="darkModeToggle">Dark Mode:</label>
+                    <input type="checkbox" id="darkModeToggle"><br>
+                    <label for="profilePic">Upload Profile Picture:</label>
+                    <input type="file" id="profilePic" accept="image/*"><br>
+                    <button id="saveSettingsBtn">Save Settings</button>
+                `;
+          document.getElementById("darkModeToggle").checked = this.darkMode;
+          document.getElementById("darkModeToggle").addEventListener("change", (event) => {
+            this.toggleDarkMode(event.target.checked);
+          });
+          document.getElementById("profilePic").addEventListener("change", (event) => {
+            this.uploadProfilePicture(event);
+          });
+          document.getElementById("saveSettingsBtn").addEventListener("click", () => this.page2());
+        }
+
+        toggleDarkMode(enabled) {
+          this.darkMode = enabled;
+          if (this.darkMode) {
+            document.body.classList.add("dark-mode");
+          } else {
+            document.body.classList.remove("dark-mode");
+          }
+        }
+      }
+
+      const app = new EatingDisorderRecoveryApp();
+    </script>
+  </body>
+</html>
